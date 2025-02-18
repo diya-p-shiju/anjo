@@ -1,0 +1,25 @@
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+  "name": "vendor",
+  "email": "vendor@example.com",
+  "password": "password",
+  "role": "vendor",
+  "mobileNumber": "1256565765",
+  "userCategory": "management",
+  "credits": 1000
+}
+
+
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminPassword123"
+}
+
+###
+GET http://localhost:3000/user
