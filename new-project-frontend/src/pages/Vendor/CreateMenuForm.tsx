@@ -3,7 +3,15 @@ import axios from 'axios';
 import { Trash2, Plus } from 'lucide-react';
 
 const MenuForm = () => {
-  const [items, setItems] = useState([{ name: '', price: '', description: '', available: true }]);
+  const [items, setItems] = useState([{
+    name: '',
+    price: '',
+    description: '',
+    available: true,
+    calories: '',
+    maxOrderQuantity: 10,
+    orderQuantity: 0
+  }]);
   const [status, setStatus] = useState({ type: '', message: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -24,16 +32,17 @@ const MenuForm = () => {
         const response = await axios.get(`http://localhost:3000/menu?vendorId=${currentUserId}`);
         
         if (response.data?.data && response.data.data.length > 0) {
-          // Take the first menu if multiple exist
           const menu = response.data.data[0];
           setItems(menu.items.map(item => ({
             ...item,
             price: item.price.toString(),
-            available: item.available || false
+            available: item.available || false,
+            calories: item.calories || '',
+            maxOrderQuantity: item.maxOrderQuantity || 10,
+            orderQuantity: item.orderQuantity || 0
           })));
         }
       } catch (error) {
-        // Only show error if it's not a 404 (no menu found)
         if (error.response?.status !== 404) {
           setStatus({
             type: 'error',
@@ -49,7 +58,15 @@ const MenuForm = () => {
   }, []);
 
   const addItem = () => {
-    setItems([...items, { name: '', price: '', description: '', available: true }]);
+    setItems([...items, {
+      name: '',
+      price: '',
+      description: '',
+      available: true,
+      calories: '',
+      maxOrderQuantity: 10,
+      orderQuantity: 0
+    }]);
   };
 
   const removeItem = (index) => {
@@ -70,14 +87,20 @@ const MenuForm = () => {
     }
 
     for (const item of items) {
-      if (!item.name.trim() || !item.price.trim()) {
-        setStatus({ type: 'error', message: 'Name and price are required for all items' });
+      if (!item.name.trim() || !item.price.trim() || !item.description.trim() || !item.calories.trim()) {
+        setStatus({ type: 'error', message: 'All fields except Order Quantity are required' });
         return false;
       }
       
       const price = parseFloat(item.price);
       if (isNaN(price) || price <= 0) {
         setStatus({ type: 'error', message: 'Price must be a valid positive number' });
+        return false;
+      }
+
+      const maxOrderQty = parseInt(item.maxOrderQuantity);
+      if (isNaN(maxOrderQty) || maxOrderQty <= 0) {
+        setStatus({ type: 'error', message: 'Maximum order quantity must be a positive number' });
         return false;
       }
     }
@@ -104,7 +127,9 @@ const MenuForm = () => {
     try {
       const formattedItems = items.map(item => ({
         ...item,
-        price: parseFloat(item.price)
+        price: parseFloat(item.price),
+        maxOrderQuantity: parseInt(item.maxOrderQuantity),
+        orderQuantity: parseInt(item.orderQuantity)
       }));
 
       const response = await axios.post('http://localhost:3000/menu', {
@@ -147,7 +172,6 @@ const MenuForm = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto">
-        {/* Header Section */}
         <div className="bg-white rounded-t-xl shadow-sm border-b">
           <div className="px-4 py-5 sm:px-6 md:px-8 flex justify-between items-center">
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Menu Management</h2>
@@ -162,10 +186,8 @@ const MenuForm = () => {
           </div>
         </div>
 
-        {/* Main Form Section */}
         <div className="bg-white shadow-sm rounded-b-xl">
           <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8 space-y-6">
-            {/* Menu Items Section */}
             <div className="space-y-4">
               {items.map((item, index) => (
                 <div key={index} className="p-4 sm:p-6 border-2 border-gray-200 rounded-lg space-y-4">
@@ -195,6 +217,7 @@ const MenuForm = () => {
                         placeholder="Enter item name"
                       />
                     </div>
+                    
                     <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
                         Price
@@ -209,7 +232,50 @@ const MenuForm = () => {
                         min="0"
                       />
                     </div>
-                    <div className="sm:col-span-2 space-y-2">
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Calories
+                      </label>
+                      <input
+                        type="text"
+                        value={item.calories}
+                        onChange={(e) => updateItem(index, 'calories', e.target.value)}
+                        className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        placeholder="Enter calories"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Max Order Quantity
+                      </label>
+                      <input
+                        type="number"
+                        value={item.maxOrderQuantity}
+                        onChange={(e) => updateItem(index, 'maxOrderQuantity', e.target.value)}
+                        className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        placeholder="Enter max order quantity"
+                        min="1"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Current Order Quantity
+                      </label>
+                      <input
+                        type="number"
+                        value={item.orderQuantity}
+                        onChange={(e) => updateItem(index, 'orderQuantity', e.target.value)}
+                        className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                        placeholder="Enter current order quantity"
+                        min="0"
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
                         Availability
                       </label>
@@ -225,6 +291,7 @@ const MenuForm = () => {
                         </span>
                       </div>
                     </div>
+
                     <div className="sm:col-span-2 space-y-2">
                       <label className="block text-sm font-medium text-gray-700">
                         Description
@@ -233,7 +300,7 @@ const MenuForm = () => {
                         value={item.description}
                         onChange={(e) => updateItem(index, 'description', e.target.value)}
                         className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                        placeholder="Enter item description (optional)"
+                        placeholder="Enter item description"
                         rows="2"
                       />
                     </div>
@@ -242,7 +309,6 @@ const MenuForm = () => {
               ))}
             </div>
 
-            {/* Status Message */}
             {status.message && (
               <div className={`p-4 rounded-lg ${
                 status.type === 'error' 
@@ -253,7 +319,6 @@ const MenuForm = () => {
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}

@@ -3,6 +3,7 @@ import NavBar from '../userComponents/Navbar';
 import ViewMenu from './ViewMenu';
 import ViewUserOrderTable from './ViewUserOrderTable';
 import PaymentForm from './StripePaymentform' // Import the PaymentForm component
+import ViewReviews from '../Vendor/ViewReviews';
 
 const User = () => {
   const [activeTab, setActiveTab] = useState('OrderFood');
@@ -19,6 +20,8 @@ const User = () => {
         return (<ViewUserOrderTable />);
       case 'CreditUpdate':
         return <PaymentForm />; // Use the PaymentForm component here
+      case 'ViewReviews':
+        return <ViewReviews />; // Use the PaymentForm component here
       default:
         return null;
     }
@@ -27,7 +30,8 @@ const User = () => {
   const navbarItems = [
     { label: 'OrderFood', link: '#order-food' },
     { label: 'OrderHistory', link: '#order-history' },
-    { label: 'CreditUpdate', link: '#credit-update' }
+    { label: 'CreditUpdate', link: '#credit-update' },
+    { label: 'ViewReviews', link: '#view-reviews' }
   ];
 
   return (

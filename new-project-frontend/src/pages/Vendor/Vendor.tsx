@@ -3,6 +3,7 @@ import Navbar from '../userComponents/Navbar';
 import CreateMenuForm from './CreateMenuForm';
 import ViewOrdersTable from './ViewOrdersTable';
 import CreditVendor from './CreditVendor';
+import ViewReviews from './ViewReviews';
 
 const Vendor: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Menu');
@@ -19,6 +20,8 @@ const Vendor: React.FC = () => {
         return (<ViewOrdersTable />);
       case 'Credit Updates':
         return (<CreditVendor />);
+      case 'View Reviews':
+        return (<ViewReviews />);
       default:
         return null;
     }
@@ -27,6 +30,7 @@ const Vendor: React.FC = () => {
   const navbarItems = [
     { label: 'Menu', link: '#menu' },
     { label: 'Orders', link: '#orders' },
+    { label: 'View Reviews', link: '#view-reviews' },
   ];
 
   return (
