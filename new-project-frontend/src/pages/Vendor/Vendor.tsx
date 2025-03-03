@@ -4,6 +4,7 @@ import CreateMenuForm from './CreateMenuForm';
 import ViewOrdersTable from './ViewOrdersTable';
 import CreditVendor from './CreditVendor';
 import ViewReviews from './ViewReviews';
+import Inventory from './InventoryManagement';
 
 const Vendor: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Menu');
@@ -22,6 +23,8 @@ const Vendor: React.FC = () => {
         return (<CreditVendor />);
       case 'View Reviews':
         return (<ViewReviews />);
+      case 'View Reviews':
+        return (<Inventory />);
       default:
         return null;
     }
@@ -31,6 +34,7 @@ const Vendor: React.FC = () => {
     { label: 'Menu', link: '#menu' },
     { label: 'Orders', link: '#orders' },
     { label: 'View Reviews', link: '#view-reviews' },
+    { label: 'Inventory Management', link: '#inventory' },
   ];
 
   return (
