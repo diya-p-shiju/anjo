@@ -30,3 +30,45 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+
+# new-project specific
+new-project/node_modules/
+new-project/npm-debug.log
+new-project/yarn-error.log
+new-project/logs/
+new-project/*.log
+new-project/*.log.*
+new-project/jspm_packages/
+new-project/bower_components/
+new-project/dist/
+new-project/build/
+new-project/.env
+new-project/.vscode/
+new-project/.idea/
+new-project/*.suo
+new-project/*.ntvs*
+new-project/*.njsproj
+new-project/*.sln
+new-project/.DS_Store
+new-project/Thumbs.db
+
+# new-project-frontend specific
+new-project-frontend/node_modules/
+new-project-frontend/npm-debug.log
+new-project-frontend/yarn-error.log
+new-project-frontend/logs/
+new-project-frontend/*.log
+new-project-frontend/*.log.*
+new-project-frontend/jspm_packages/
+new-project-frontend/bower_components/
+new-project-frontend/dist/
+new-project-frontend/build/
+new-project-frontend/.env
+new-project-frontend/.vscode/
+new-project-frontend/.idea/
+new-project-frontend/*.suo
+new-project-frontend/*.ntvs*
+new-project-frontend/*.njsproj
+new-project-frontend/*.sln
+new-project-frontend/.DS_Store
+new-project-frontend/Thumbs.db
