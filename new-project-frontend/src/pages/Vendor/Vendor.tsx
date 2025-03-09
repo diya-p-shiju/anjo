@@ -23,7 +23,7 @@ const Vendor: React.FC = () => {
         return (<CreditVendor />);
       case 'View Reviews':
         return (<ViewReviews />);
-      case 'View Reviews':
+      case 'Inventory Management':
         return (<Inventory />);
       default:
         return null;

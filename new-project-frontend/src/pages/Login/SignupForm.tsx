@@ -10,7 +10,7 @@ const SignUp = () => {
     role: 'admin',
     userCategory: 'management',
     mobileNumber: '',
-    admissionNumber: '',
+    admissionNumber: '0000',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

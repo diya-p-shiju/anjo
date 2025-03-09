@@ -14,6 +14,7 @@ import user from './routes/user';
 import order from './routes/order';
 import review from './routes/review';
 import striperouter from './controllers/stripeController';
+import inventory from './routes/inventory';
 
 
 import mongoose from 'mongoose';
@@ -52,6 +53,7 @@ app.use('/order', order)
 app.use('/menu', menu)
 app.use('/user', user)
 app.use('/review', review)
+app.use('/inventory',inventory)
 
 
 app.post('/create-checkout-session', striperouter);
